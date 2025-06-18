@@ -1,0 +1,23 @@
+
+components 
+    - Header
+    - Game
+    - Board
+        - Board
+        - BoardRows
+    - Square
+
+
+//TODO :
+    - make a design
+    - Style using tailwind
+    
+
+//TODO : 
+if there a winner --> Game Over
+    - Finish and start from scratch
+    - move to spcific move.
+
+
+
+
