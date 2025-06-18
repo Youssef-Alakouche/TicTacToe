@@ -61,7 +61,7 @@ function Player({ symbol, setName, xIsNext }: PlayerProps) {
       <span
         // onClick={() => toggleEdit(`${player}Player`)}
         onClick={toggleEdit}
-        className="w-1/3 text-center"
+        className="w-1/3 text-center cursor-pointer"
       >
         {isEditing ? "Save" : "Edit"}
       </span>
