@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import type { snapshotsType, squaresType } from "../Utilities/types";
 import Board from "./Board/Board";
@@ -5,76 +6,101 @@ import Moves from "./Moves";
 import GameWinnerOverlay from "./GameWinnerOverlay";
 
 export default function Game() {
- // Game history - array of board states (snapshots of squares)
- const [snapshots, setSnapshots] = useState<snapshotsType>([
-   Array(9).fill(null),
- ]);
- 
- // Current position in game history (which move we're viewing)
- const [currentMove, setCurrentMove] = useState<number>(0);
- 
- // Winner of the game (X, O, or null if no winner yet)
- const [winner, setWinner] = useState<string | null>(null);
- 
- // Controls visibility of winner overlay dialog
- const [isOpen, setIsOpen] = useState<boolean>(false);
+  // Game history - array of board states (snapshots of squares)
+  const [snapshots, setSnapshots] = useState<snapshotsType>([
+    Array(9).fill(null),
+  ]);
 
- // Determine whose turn it is based on move number (even = X, odd = O)
- const xIsNext = currentMove % 2 === 0;
- 
- // Get the current board state from history
- const currentSquares = snapshots[currentMove];
+  // Current position in game history (which move we're viewing)
+  const [currentMove, setCurrentMove] = useState<number>(0);
 
- // Handle a player making a move
- function handlePlay(nextSquares: squaresType) {
-   // Create new history up to current move + new move (removes future history if we're in the past)
-   const nextHistory = [...snapshots.slice(0, currentMove + 1), nextSquares];
-   setSnapshots(nextHistory);
-   // Jump to the latest move
-   setCurrentMove(nextHistory.length - 1);
- }
+  // Winner of the game (X, O, or null if no winner yet)
+  const [winner, setWinner] = useState<string | null>(null);
 
- // Navigate to a specific move in history
- function jumpTo(nextMove: number) {
-   setCurrentMove(nextMove);
- }
+  // Controls visibility of winner overlay dialog
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
- // Reset game to initial state
- function PlayAgainHandler(){
-   setSnapshots([Array(9).fill(null)]);
-   setCurrentMove(0);
-   setWinner(null);
-   setIsOpen(false);
- }
+  // Determine whose turn it is based on move number (even = X, odd = O)
+  const xIsNext = currentMove % 2 === 0;
 
- // Close winner overlay and reset winner state
- // give the player a chance to browse the history
- function handlerCloseOverlay() {
-   setIsOpen(false);
-   setWinner(null);
- }
+  // Get the current board state from history
+  const currentSquares = snapshots[currentMove];
 
- // Called when game is over - shows winner overlay
- function handleWin(winner: string | null) {
-   setWinner(winner);
-   setIsOpen(true);
- }
+  // Handle a player making a move
+  function handlePlay(nextSquares: squaresType) {
+    console.log("handlePlay");
+    // Create new history up to current move + new move (removes future history if we're in the past)
+    const nextHistory = [...snapshots.slice(0, currentMove + 1), nextSquares];
+    setSnapshots(nextHistory);
+    // Jump to the latest move
+    setCurrentMove(nextHistory.length - 1);
+  }
 
- return (
-   <>
-   {/* Winner announcement overlay dialog */}
-   <GameWinnerOverlay isOpen={isOpen} onClose={handlerCloseOverlay} winner={winner || ""} onPlayAgain={PlayAgainHandler} />
-   
-   {/* Main game container */}
-   <div className="flex flex-col items-center justify-center min-h-screen ">
-     {/* Game board container */}
-     <div className="flex flex-col items-center justify-center w-full max-w-md p-4 bg-white rounded shadow-lg">
-       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} setWinner={handleWin} />
-     </div>
-   
-   {/* Move history component */}
-   <Moves snapshots={snapshots} jumpTo={jumpTo} />
-   </div>
-   </>
- );
+  // Navigate to a specific move in history
+  function jumpTo(nextMove: number) {
+    console.log("jumpTo");
+    setWinner(null); // Reset winner when jumping to a move
+    setCurrentMove(nextMove);
+  }
+
+  // Reset game to initial state
+  function PlayAgainHandler() {
+    console.log("PlayAgainHandler");
+    setSnapshots([Array(9).fill(null)]);
+    setCurrentMove(0);
+    setWinner(null);
+    setIsOpen(false);
+  }
+
+  // Close winner overlay and reset winner state
+  // give the player a chance to browse the history
+  function handlerCloseOverlay() {
+    
+    console.log("handlerCloseOverlay");
+    // setWinner(null);
+    setIsOpen(false);
+  }
+
+  // console.warn(isOpen);
+
+  // Called when game is over - shows winner overlay
+  function handleWin(winner: string | null) {
+    console.log("handleWind");
+    setWinner(winner);
+    setIsOpen(true);
+  }
+
+  return (
+    <>
+      {/* Winner announcement overlay dialog */}
+
+      {
+        isOpen ? <GameWinnerOverlay
+        // isOpen={isOpen}
+        onClose={handlerCloseOverlay}
+        winner={winner || ""}
+        onPlayAgain={PlayAgainHandler}
+      /> : null
+      }
+      
+
+      {/* Main game container */}
+      <div className="flex flex-col items-center justify-center min-h-screen ">
+        {/* Game board container */}
+        <div className="flex flex-col items-center justify-center w-full max-w-md p-4 bg-white rounded shadow-lg">
+          <Board
+            xIsNext={xIsNext}
+            squares={currentSquares}
+            onPlay={handlePlay}
+            setWinner={handleWin}
+            
+            checkWinner={winner === null ? true : false} // Only check for winner if game is ongoing
+          />
+        </div>
+
+        {/* Move history component */}
+        <Moves snapshots={snapshots} jumpTo={jumpTo} />
+      </div>
+    </>
+  );
 }

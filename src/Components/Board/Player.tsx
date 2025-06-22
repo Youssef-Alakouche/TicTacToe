@@ -12,10 +12,11 @@ type PlayerProps = {
   name: string;
   setName: React.Dispatch<React.SetStateAction<PlayersState>>;
   xIsNext: boolean;
+  handleEditing: () => void;
 };
 
 
-function Player({ symbol, setName, xIsNext }: PlayerProps) {
+function Player({ symbol, setName, xIsNext, handleEditing }: PlayerProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   const playerNameRef = useRef<HTMLInputElement>(null);
@@ -36,6 +37,12 @@ function Player({ symbol, setName, xIsNext }: PlayerProps) {
           OPlayer: newName,
         }));
       }
+
+
+    }
+
+    if(!isEditing){
+        handleEditing();
     }
 
     setIsEditing((prev) => !prev);

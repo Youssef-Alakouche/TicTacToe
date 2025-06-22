@@ -14,4 +14,5 @@ export type BoardProps = {
   squares: squaresType;
   onPlay: (nextSquares: squaresType) => void;
   setWinner: (winner: string | null) => void;
+  checkWinner?: boolean;
 };

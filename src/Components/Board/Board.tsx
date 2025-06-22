@@ -13,6 +13,7 @@ export default function Board({
   squares,
   onPlay,
   setWinner,
+  checkWinner
 }: BoardProps) {
   const [isNamesEdited, setIsNamesEdited] = useState<boolean>(false);
   const PlayerXNameRef = useRef<string>("Player X");
@@ -33,6 +34,13 @@ export default function Board({
 
   
   useEffect(() => {
+    // Check if the winner should be calculated
+    // This is to avoid unnecessary calculations when the game is not over
+    // or when the squares haven't changed
+    // This also prevents the GameOver overlay from showing up 
+    // preventing handleWind in Game to run
+    if (!checkWinner) return;
+    
     const winner = calculateWinner(squares);
     if (winner) {
       if (winner === "X") {

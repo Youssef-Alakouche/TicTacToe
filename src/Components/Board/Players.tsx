@@ -21,32 +21,6 @@ export default function Players({
     OPlayer: "Player O",
   });
 
-
-  // const XPlayerRef = useRef<HTMLInputElement>(null);
-  // const OPlayerRef = useRef<HTMLInputElement>(null);
-
-//   function toggleEdit(player: "XPlayer" | "OPlayer") {
-//     // save the current input value before toggling edit mode
-//     var currentPlayer = players[player];
-
-//     // if the player is currently editing, we can save the value
-//     if (currentPlayer.isEditing) {
-//       if (player === "XPlayer" && XPlayerRef.current) {
-//         currentPlayer.name = XPlayerRef.current.value;
-//       } else if (player === "OPlayer" && OPlayerRef.current) {
-//         currentPlayer.name = OPlayerRef.current.value;
-//       }
-//     }
-
-//     setPlayers((prev) => ({
-//       ...prev,
-//       [player]: {
-//         ...prev[player],
-//         isEditing: !prev[player].isEditing,
-//       },
-//     }));
-
-// }
 useEffect(() => {
     // console.log(players.XPlayer.name);
     // console.log(players.OPlayer.name);
@@ -65,10 +39,16 @@ useEffect(() => {
   }
 }, [playersNames.OPlayer, playersNames.XPlayer]);
 
+function handleEditing() {
+  // if( !(playersNames.OPlayer === "Player O" || playersNames.XPlayer === "Player X")) 
+  //   setPlayersNames({XPlayer: "Player X", OPlayer: "Player O"});
+  onNamesChanged(false, playersNames.XPlayer, playersNames.OPlayer);
+}
+
   return (
     <ol className="flex w-full gap-2 justify-around mb-4 list-none">
-      <Player symbol="X" xIsNext={xIsNext} setName={setPlayersNames} name={playersNames.XPlayer} />
-      <Player symbol="O" xIsNext={xIsNext} setName={setPlayersNames} name={playersNames.OPlayer} />
+      <Player symbol="X" xIsNext={xIsNext} setName={setPlayersNames} name={playersNames.XPlayer} handleEditing={handleEditing} />
+      <Player symbol="O" xIsNext={xIsNext} setName={setPlayersNames} name={playersNames.OPlayer} handleEditing={handleEditing} />
     </ol>
   );
 }

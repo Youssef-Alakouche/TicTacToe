@@ -4,7 +4,7 @@
 
 export interface GameWinnerOverlayProps {
   /** Controls whether the overlay dialog is visible */
-  isOpen: boolean;
+  // isOpen: boolean;
   
   /** Function called when the overlay should be closed */
   onClose: () => void;
@@ -20,13 +20,15 @@ export interface GameWinnerOverlayProps {
 }
 
 const GameWinnerOverlay = ({ 
-  isOpen, 
+  // isOpen, 
   onClose, 
   winner = "X", 
   onPlayAgain, 
 //   onBrowseMoves 
 } : GameWinnerOverlayProps) => {
-  if (!isOpen) return null;
+  //TODO: This runing twice, need to fix this
+  // console.log(isOpen);
+  // if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
